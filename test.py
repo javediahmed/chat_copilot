@@ -154,29 +154,6 @@ class ChatGPT:
                 if not isinstance(value, dict):
                     indices.pop()
 
-    # def display_settings(self, settings, indices=None):
-    #     """
-    #     Display the current chat settings.
-
-    #     Args:
-    #         settings (dict): The chat settings.
-    #         indices (list): A list of indices for the settings.
-    #     """
-    #     if indices is None:
-    #         indices = []
-
-    #     for key, value in settings.items():
-    #         if key != "Menu":
-    #             indices.append(str(len(indices) + 1))
-
-    #             if isinstance(value, dict):
-    #                 print(f"{'. '.join(indices)}. {key}:")
-    #                 self.display_settings(value, indices)
-    #             else:
-    #                 print(f"{'. '.join(indices)}. {key}: {value}")
-    #             if not isinstance(value, dict):
-    #                 indices.pop()
-
     def update_subsettings(self, settings):
         """
         Update the subsettings.
