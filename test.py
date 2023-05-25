@@ -31,6 +31,11 @@ DEFAULT_SETTINGS = {
         "Temperature": 0.5,
         "Role": "user"
     },
+    "Copilot Settings": {
+        "Max Tokens": 60,
+        "Temperature": 0.5,
+        "Role": "user"
+    },
     "Menu": {
         "1": "Chat",
         "2": "Copilot",
@@ -122,7 +127,7 @@ class ChatGPT:
         """
         print("\nWhich setting would you like to change?")
         self.display_settings(self.settings)
-        self.change_settings(self.settings)
+        self.change_settings(self.prompt_user("Select setting to change [FIX NUMBERING]:"))
 
     def display_settings(self, settings, indices=None):
         """
@@ -227,8 +232,13 @@ class ChatGPT:
             print("Exiting the program...")
             exit()
         else:
-            print("Invalid choice. Please try again.")
-            
+            print("Invalid choice. Please try again.")            
+    def change_settings(self, setting_to_change):
+        # We know that the flattened setting names are in the format "category_subcategory"
+        category, subcategory = setting_to_change.split("_")
+        # Update the value in the original settings dictionary
+        self.settings[category][subcategory] = new_value
+
     def run(self):
         """
         Run the ChatGPT interface.
@@ -248,3 +258,10 @@ class ChatGPT:
 if __name__ == "__main__":
     chat_gpt = ChatGPT()
     chat_gpt.run()
+
+# def change_settings(self, setting_to_change, new_value):
+#         # We know that the flattened setting names are in the format "category_subcategory"
+#         breakpoint()
+#         category, subcategory = setting_to_change.split("_")
+#         # Update the value in the original settings dictionary
+#         self.settings[category][subcategory] = new_value
