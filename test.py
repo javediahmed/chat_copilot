@@ -115,7 +115,8 @@ class ChatGPT:
                     temperature=query_settings["Temperature"]
                 )
                 response_text = response.choices[0].text.strip()
-                self.history.append({"query": query, "response": response_text, "copilot_response": response_text if copilot else ""})
+                self.history.append({"query": query, "response": response_text,
+                                     "copilot_response": response_text if copilot else ""})
                 print(f"\n{response_text}")
             except openai.error.APIError as e:
                 print(f"\nOpenAI API Error: {e}")
