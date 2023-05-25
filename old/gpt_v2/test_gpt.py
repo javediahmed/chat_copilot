@@ -1,0 +1,156 @@
+import os
+import json
+import openai
+from datetime import datetime
+
+MODELS = {
+    "GPT-1": "text-gpt-1-en-12b",
+    "GPT-2": "text-gpt-2-en-117b",
+    "GPT-3": "text-davinci-002",
+    "GPT-3.5": "text-davinci-003",
+    "GPT-4": "text-davinci-004",
+    "Jurassic-1 Jumbo": "text-jurassic-1-jumbo-en-175b",
+    "Megatron-Turing NLG": "text-megatron-turing-nlg-345m-355b",
+    "WuDao 2.0": "text-wudao-2-0-en-1.76T"
+}
+
+MAIN_MENU = {
+    "1": "Chat",
+    "2": "Copilot",
+    "3": "Export data",
+    "s": "Update settings",
+    "?": "Help",
+    "x": "Exit"
+}
+
+
+class ChatGPT:
+    def __init__(self):
+        self.api_key = os.getenv("OPENAI_API_KEY")
+        openai.api_key = self.api_key
+        self.model = None
+        self.settings = {
+            "model": "text-davinci-002",
+            "max_tokens": 60,
+            "temperature": 0.5,
+            "role": "user"
+        }
+        self.history = []
+
+    def prompt_user(self, message):
+        return input(f"{message}\n\n")
+
+    def chat(self, copilot=False):
+        if copilot:
+            header = "Copilot"
+        else:
+            header = "Chatting"
+        print(f"\n{header} with {self.settings['model']}")
+
+        while True:
+            query = self.prompt_user("\nEnter your query ('f': submit file, 'x': exit): ")
+            if query == "x":
+                break
+            elif query == "f":
+                self.submit_file()
+            else:
+                response = self.generate_response(query)
+                self.display_response(response)
+
+    def generate_response(self, query):
+        self.history.append({"user": query})
+        response = openai.Completion.create(
+            engine="davinci-codex" if "codex" in self.settings['model'] else "davinci",
+            prompt=query,
+            max_tokens=int(self.settings["max_tokens"]),
+            temperature=float(self.settings["temperature"]),
+            n=1,
+            stop=None
+        )
+        self.history.append({"model": response.choices[0].text.strip()})
+        return response.choices[0].text.strip()
+
+    def display_response(self, response):
+        print(f"\nResponse:\n{response}\n")
+
+    def submit_file(self):
+        filepath = self.prompt_user("Enter the file path: ")
+        try:
+            with open(filepath, "r") as f:
+                data = json.load(f)
+                query = data["query"]
+                self.chat(query)
+        except (json.JSONDecodeError, KeyError):
+            print("Invalid JSON format.")
+            return
+
+    def update_settings(self):
+        print("\nCurrent settings:")
+        for key, value in self.settings.items():
+            print(f"{key}: {value}")
+
+        setting_to_update = self.prompt_user("Which setting would you like to change? ")
+        if setting_to_update in self.settings:
+            if isinstance(self.settings[setting_to_update], dict):
+                self.update_subsettings(setting_to_update)
+            else:
+                self.update_setting_value(setting_to_update)
+
+    def update_subsettings(self, setting):
+        print(f"\n{setting} settings:")
+        subsettings = self.settings[setting]
+        for key, value in subsettings.items():
+            print(f"{key}: {value}")
+
+        subsetting_to_update = self.prompt_user("Which subsetting would you like to change? ")
+        if subsetting_to_update in subsettings:
+            new_value = self.prompt_user(f"Enter the new value for {subsetting_to_update}: ")
+            self.settings[setting][subsetting_to_update] = new_value
+            print(f"{subsetting_to_update} has been updated to {new_value}\n")
+        else:
+            print("Invalid subsetting.")
+
+    def update_setting_value(self, setting):
+        new_value = self.prompt_user(f"Enter the new value for {setting}: ")
+        self.settings[setting] = new_value
+        print(f"{setting} has been updated to {new_value}\n")
+
+    def export_data(self):
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"gpt_chat_export_{timestamp}.json"
+        with open(filename, "w") as f:
+            json.dump(self.history, f)
+        print(f"Chat history exported to {filename}")
+
+    def help(self):
+        print("Help content goes here.")
+
+    def handle_menu_choice(self, choice):
+        if choice == "1":
+            self.chat()
+        elif choice == "2":
+            self.chat(copilot=True)
+        elif choice == "3":
+            self.export_data()
+        elif choice == "s":
+            self.update_settings()
+        elif choice == "?":
+            self.help()
+        elif choice == "x":
+            print("Exiting the program...")
+            exit()
+        else:
+            print("Invalid choice. Please try again.")
+
+    def run(self):
+        print(f"\n{datetime.now().strftime('%Y-%m-%d')}\n")
+        while True:
+            print("Main Menu:")
+            for key, value in MAIN_MENU.items():
+                print(f"{key}. {value}")
+            choice = self.prompt_user("Enter your choice: ")
+            self.handle_menu_choice(choice)
+
+if __name__ == "__main__":
+    chat_gpt = ChatGPT()
+    chat_gpt.run()
