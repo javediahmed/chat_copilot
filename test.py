@@ -2,9 +2,9 @@
 Public Version browseGPT Prototype
 
 Date: 5/25/2023
-Author: Javed I. Ahmed; chat@aicanalytics.com
+Author: Javed I. Ahmed; chat@aicanalytics.com 
 Dependencies: openai, os, json, datetime.datetime
-Licence: Please cite if used, pls use if cited.
+Licence: Please cite if used.
 """
 
 import openai
@@ -154,28 +154,28 @@ class ChatGPT:
                 if not isinstance(value, dict):
                     indices.pop()
 
-    def display_settings(self, settings, indices=None):
-        """
-        Display the current chat settings.
+    # def display_settings(self, settings, indices=None):
+    #     """
+    #     Display the current chat settings.
 
-        Args:
-            settings (dict): The chat settings.
-            indices (list): A list of indices for the settings.
-        """
-        if indices is None:
-            indices = []
+    #     Args:
+    #         settings (dict): The chat settings.
+    #         indices (list): A list of indices for the settings.
+    #     """
+    #     if indices is None:
+    #         indices = []
 
-        for key, value in settings.items():
-            if key != "Menu":
-                indices.append(str(len(indices) + 1))
+    #     for key, value in settings.items():
+    #         if key != "Menu":
+    #             indices.append(str(len(indices) + 1))
 
-                if isinstance(value, dict):
-                    print(f"{'. '.join(indices)}. {key}:")
-                    self.display_settings(value, indices)
-                else:
-                    print(f"{'. '.join(indices)}. {key}: {value}")
-                if not isinstance(value, dict):
-                    indices.pop()
+    #             if isinstance(value, dict):
+    #                 print(f"{'. '.join(indices)}. {key}:")
+    #                 self.display_settings(value, indices)
+    #             else:
+    #                 print(f"{'. '.join(indices)}. {key}: {value}")
+    #             if not isinstance(value, dict):
+    #                 indices.pop()
 
     def update_subsettings(self, settings):
         """
