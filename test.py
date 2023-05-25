@@ -1,5 +1,5 @@
 """
-Public Version ChatGPT Browser Prototype
+Public Version browseGPT Prototype
 
 Date: 5/25/2023
 Author: Javed I. Ahmed; chat@aicanalytics.com
