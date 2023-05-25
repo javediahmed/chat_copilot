@@ -32,9 +32,10 @@ DEFAULT_SETTINGS = {
         "Role": "user"
     },
     "Copilot Settings": {
-        "Max Tokens": 60,
-        "Temperature": 0.5,
-        "Role": "user"
+        "Assistance Level": "Medium",
+        "Modules": ("browseGPT", "MACGPT", "GPT4All"),
+        "Default GUI":"GPT4All",
+        "Role": "client-l2"
     },
     "Menu": {
         "1": "Chat",
