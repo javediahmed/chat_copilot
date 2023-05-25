@@ -47,7 +47,7 @@ DEFAULT_SETTINGS = {
     }
 }
 
-class ChatGPT:
+class OpenAI:
     """
     ChatGPT class for interacting with the OpenAI GPT models.
     """
@@ -225,7 +225,7 @@ class ChatGPT:
         Args:
             menu (dict): The menu options.
         """
-        print("ChatGPT Browser Prototype")
+        print("browseGPT Prototype: OpenAI Models")
         print(f"Date: {datetime.today().strftime('%Y-%m-%d')}")
         while True:
             print("\nMain Menu:")
@@ -235,12 +235,6 @@ class ChatGPT:
             self.handle_menu_choice(user_choice)
 
 if __name__ == "__main__":
-    chat_gpt = ChatGPT()
-    chat_gpt.run()
+    oai = OpenAI()
+    oai.run()
 
-# def change_settings(self, setting_to_change, new_value):
-#         # We know that the flattened setting names are in the format "category_subcategory"
-#         breakpoint()
-#         category, subcategory = setting_to_change.split("_")
-#         # Update the value in the original settings dictionary
-#         self.settings[category][subcategory] = new_value
